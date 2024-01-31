@@ -10,6 +10,6 @@ public class GetUserByEmailSpec
     {
         Query
             .AsNoTracking()
-            .Where(x => x.Email == email);
+            .Where(x => x.Email.ToLower() == email.ToLower());
     }
 }

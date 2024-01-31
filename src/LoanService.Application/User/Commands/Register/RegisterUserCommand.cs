@@ -36,6 +36,7 @@ public class CreateUserCommandValidator
             .EmailAddress();
 
         RuleFor(u => u.DateOfBirth)
+            .LessThan(DateTime.Today.AddYears(-18))
             .NotEmpty();
 
         RuleFor(u => u.Password)

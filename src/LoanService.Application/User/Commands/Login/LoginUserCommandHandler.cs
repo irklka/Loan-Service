@@ -37,6 +37,8 @@ public class LoginUserCommandHandler
 
         var token = await _tokenService.GenerateTokenAsync(user.Id, UserRole.Customer);
 
-        return new LoginUserCommandResponse(user.Id, token);
+        return new LoginUserCommandResponse(
+            new(user.Id, $"{user.Firstname} {user.Lastname}"),
+            token);
     }
 }

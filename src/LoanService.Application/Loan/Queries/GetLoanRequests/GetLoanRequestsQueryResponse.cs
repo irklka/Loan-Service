@@ -1,11 +1,11 @@
 ﻿using LoanService.Application.Loan.Queries.Common.Dtos;
 using LoanService.Application.Loan.Queries.Common.Mappings;
 
-namespace LoanService.Application.Loan.Queries.GetActiveLoanRequests;
+namespace LoanService.Application.Loan.Queries.GetLoanRequests;
 
-public class GetActiveLoanRequestsQueryResponse
+public class GetLoanRequestsQueryResponse
 {
-    public GetActiveLoanRequestsQueryResponse(List<Core.Loan.LoanRequest> loanRequests)
+    public GetLoanRequestsQueryResponse(List<Core.Loan.LoanRequest> loanRequests)
     {
         if (loanRequests is not null)
         {
@@ -13,8 +13,7 @@ public class GetActiveLoanRequestsQueryResponse
                 .Select(LoanRequestMap.MapLoanRequestEntityToLoanRequestDto)
                 .ToArray();
         }
-        LoanRequests = Array.Empty<LoanRequest>();
     }
 
-    public LoanRequest[] LoanRequests { get; set; }
+    public LoanRequest[] LoanRequests { get; set; } = Array.Empty<LoanRequest>();
 }

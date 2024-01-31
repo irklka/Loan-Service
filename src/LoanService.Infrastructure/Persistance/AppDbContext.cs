@@ -22,10 +22,7 @@ public class AppDbContext : DbContext
     public DbSet<LoanRequest> LoanRequests { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.EnableSensitiveDataLogging();
-        optionsBuilder.EnableDetailedErrors();
-    }
+        => optionsBuilder.EnableDetailedErrors();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

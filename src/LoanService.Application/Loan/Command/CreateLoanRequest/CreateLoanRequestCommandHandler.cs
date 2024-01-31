@@ -6,6 +6,7 @@ using LoanService.Core.User;
 using MediatR;
 
 namespace LoanService.Application.Loan.Command.CreateLoanRequest;
+
 public class CreateLoanRequestCommandHandler
     : IRequestHandler<CreateLoanRequestCommand, Unit>
 {

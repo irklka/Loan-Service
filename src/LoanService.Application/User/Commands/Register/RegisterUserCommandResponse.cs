@@ -1,3 +1,5 @@
 ﻿namespace LoanService.Application.User.Commands.Register;
 
-public record RegisterUserCommandResponse(Guid UserId, string Token);
+public record RegisterUserCommandResponse(User User, string Token);
+
+public record User(Guid UserId, string Fullname);

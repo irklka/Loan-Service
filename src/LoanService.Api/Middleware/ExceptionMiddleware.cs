@@ -10,10 +10,13 @@ namespace LoanService.Api.Middleware;
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly ILogger<ExceptionMiddleware> _logger;
 
-    public ExceptionMiddleware(RequestDelegate next)
+    public ExceptionMiddleware(RequestDelegate next,
+        ILogger<ExceptionMiddleware> logger)
     {
         _next = next;
+        _logger = logger;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -34,16 +37,17 @@ public class ExceptionMiddleware
         {
             await HandleExceptionAsync(context, ex, HttpStatusCode.Conflict);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            await HandleExceptionAsync(context, "internal error, try again later", HttpStatusCode.InternalServerError);
-
+            await HandleExceptionAsync(context, ex, "internal error, try again later", HttpStatusCode.InternalServerError);
         }
         // Add more catch blocks for other custom exceptions if needed
     }
 
-    private static Task HandleValidationException(HttpContext context, ValidationException exception, HttpStatusCode statusCode)
+    private Task HandleValidationException(HttpContext context, ValidationException exception, HttpStatusCode statusCode)
     {
+        LogError(string.Join(", ", exception.Errors), statusCode);
+
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)statusCode;
 
@@ -52,8 +56,10 @@ public class ExceptionMiddleware
         return context.Response.WriteAsync(result);
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, Exception exception, HttpStatusCode statusCode)
+    private Task HandleExceptionAsync(HttpContext context, Exception exception, HttpStatusCode statusCode)
     {
+        LogError(exception.Message, statusCode);
+
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)statusCode;
 
@@ -62,13 +68,20 @@ public class ExceptionMiddleware
         return context.Response.WriteAsync(result);
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, string message, HttpStatusCode statusCode)
+    private Task HandleExceptionAsync(HttpContext context, Exception exception, string message, HttpStatusCode statusCode)
     {
+        LogError(exception.Message, statusCode);
+
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)statusCode;
 
         var result = JsonSerializer.Serialize(new { error = message });
 
         return context.Response.WriteAsync(result);
+    }
+
+    private void LogError(string message, HttpStatusCode statusCode)
+    {
+        _logger.LogError("Exception was thrown [StatusCode: {0}]: {1}", statusCode, message);
     }
 }

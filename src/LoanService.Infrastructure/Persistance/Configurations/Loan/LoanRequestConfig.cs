@@ -1,5 +1,6 @@
 ﻿using LoanService.Core.Loan;
 using LoanService.Infrastructure.Persistance.Configurations.Common;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

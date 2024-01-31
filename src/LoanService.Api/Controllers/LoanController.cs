@@ -2,17 +2,18 @@
 using LoanService.Application.Loan.Command.CreateLoanRequest;
 using LoanService.Application.Loan.Command.UpdateLoanRequest;
 using LoanService.Application.Loan.Queries.GetActiveLoanRequests;
+using LoanService.Application.Loan.Queries.GetLoanRequests;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoanService.Api.Controllers;
 
+[Authorize]
 [Route("api/loans")]
 public class LoanController : ApiControllerBase
 {
     [HttpPost]
-    [Authorize]
     public async Task<IResult> CreateLoanRequest(CreateLoanRequestCommand command,
         CancellationToken cancellationToken)
     {
@@ -20,8 +21,7 @@ public class LoanController : ApiControllerBase
         return Results.NoContent();
     }
 
-    [HttpPost("status")]
-    [Authorize]
+    [HttpPut("status")]
     public async Task<IResult> ChangeLoanRequestStatus(ChangeLoanRequestStatusCommand command,
         CancellationToken cancellationToken)
     {
@@ -30,7 +30,6 @@ public class LoanController : ApiControllerBase
     }
 
     [HttpPut]
-    [Authorize]
     public async Task<IResult> UpdateLoanRequest(UpdateLoanRequestCommand command,
         CancellationToken cancellationToken)
     {
@@ -38,11 +37,18 @@ public class LoanController : ApiControllerBase
         return Results.NoContent();
     }
 
-    [HttpGet]
-    [Authorize]
+    [HttpGet("active")]
     public async Task<IResult> GetActiveLoans(CancellationToken cancellationToken)
     {
         var query = new GetActiveLoanRequestsQuery();
+        var response = await Mediator.Send(query, cancellationToken);
+        return Results.Ok(response);
+    }
+
+    [HttpGet]
+    public async Task<IResult> GetLoans(CancellationToken cancellationToken)
+    {
+        var query = new GetLoanRequestsQuery();
         var response = await Mediator.Send(query, cancellationToken);
         return Results.Ok(response);
     }

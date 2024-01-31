@@ -1,6 +1,8 @@
 ﻿using Ardalis.Specification;
+
 using LoanService.Infrastructure.Persistance;
 using LoanService.Infrastructure.Persistance.Repositories;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

@@ -53,6 +53,8 @@ public class RegisterUserCommandHandler
 
         var token = await _tokenService.GenerateTokenAsync(user.Id, UserRole.Customer);
 
-        return new RegisterUserCommandResponse(user.Id, token);
+        return new RegisterUserCommandResponse(
+            new(user.Id, $"{user.Firstname} {user.Lastname}"),
+            token);
     }
 }
