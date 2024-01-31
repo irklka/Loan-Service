@@ -3,6 +3,7 @@ using LoanService.Application.Loan.Command.CreateLoanRequest;
 using LoanService.Application.Loan.Command.UpdateLoanRequest;
 using LoanService.Application.Loan.Queries.GetActiveLoanRequests;
 using LoanService.Application.Loan.Queries.GetLoanRequests;
+using LoanService.Application.Loan.Queries.GetUserActiveLoans;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,14 @@ public class LoanController : ApiControllerBase
     public async Task<IResult> GetActiveLoans(CancellationToken cancellationToken)
     {
         var query = new GetActiveLoanRequestsQuery();
+        var response = await Mediator.Send(query, cancellationToken);
+        return Results.Ok(response);
+    }
+
+    [HttpGet("{id:guid}/active")]
+    public async Task<IResult> GetUserActriveLoans(Guid id, CancellationToken cancellationToken)
+    {
+        var query = new GetUserActiveLoansQuery(id);
         var response = await Mediator.Send(query, cancellationToken);
         return Results.Ok(response);
     }

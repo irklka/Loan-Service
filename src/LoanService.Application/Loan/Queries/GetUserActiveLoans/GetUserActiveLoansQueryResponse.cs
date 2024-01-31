@@ -1,11 +1,11 @@
 ﻿using LoanService.Application.Loan.Queries.Common.Dtos;
 using LoanService.Application.Loan.Queries.Common.Mappings;
 
-namespace LoanService.Application.Loan.Queries.GetActiveLoanRequests;
+namespace LoanService.Application.Loan.Queries.GetUserActiveLoans;
 
-public class GetActiveLoanRequestsQueryResponse
+public class GetUserActiveLoansQueryResponse
 {
-    public GetActiveLoanRequestsQueryResponse(List<Core.Loan.LoanRequest> loanRequests)
+    public GetUserActiveLoansQueryResponse(List<Core.Loan.LoanRequest> loanRequests)
     {
         if (loanRequests is not null)
         {
